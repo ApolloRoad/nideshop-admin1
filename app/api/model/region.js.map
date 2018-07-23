@@ -1,0 +1,44 @@
+{
+    "version": 3,
+    "sources": [
+        "..\\..\\..\\src\\api\\model\\region.js"
+    ],
+    "names": [
+        "_",
+        "require",
+        "module",
+        "exports",
+        "think",
+        "Model",
+        "getFullRegionName",
+        "provinceId",
+        "cityId",
+        "districtId",
+        "isFullRegion",
+        "checkFullRegion",
+        "regionList",
+        "limit",
+        "order",
+        "where",
+        "id",
+        "select",
+        "isEmpty",
+        "length",
+        "flatMap",
+        "join",
+        "get",
+        "getRegionName",
+        "regionId",
+        "getField",
+        "getRegionList",
+        "parentId",
+        "parent_id",
+        "getRegionInfo",
+        "find"
+    ],
+    "mappings": ";;AAAA,MAAMA,IAAIC,QAAQ,QAAR,CAAV;;AAEAC,OAAOC,OAAP,GAAiB,cAAcC,MAAMC,KAApB,CAA0B;AACzC;;;;;;;AAOMC,mBAAN,CAAwBC,UAAxB,EAAoCC,MAApC,EAA4CC,UAA5C,EAAwD;AAAA;;AAAA;AACtD,YAAMC,eAAe,MAAM,MAAKC,eAAL,CAAqBJ,UAArB,EAAiCC,MAAjC,EAAyCC,UAAzC,CAA3B;AACA,UAAI,CAACC,YAAL,EAAmB;AACjB,eAAO,EAAP;AACD;;AAED,YAAME,aAAa,MAAM,MAAKC,KAAL,CAAW,CAAX,EAAcC,KAAd,CAAoB,EAAC,MAAM,KAAP,EAApB,EAAmCC,KAAnC,CAAyC,EAACC,IAAI,EAAC,MAAM,CAACT,UAAD,EAAaC,MAAb,EAAqBC,UAArB,CAAP,EAAL,EAAzC,EAAyFQ,MAAzF,EAAzB;AACA,UAAIb,MAAMc,OAAN,CAAcN,UAAd,KAA6BA,WAAWO,MAAX,KAAsB,CAAvD,EAA0D;AACxD,eAAO,EAAP;AACD;;AAED,aAAOnB,EAAEoB,OAAF,CAAUR,UAAV,EAAsB,MAAtB,EAA8BS,IAA9B,CAAmC,EAAnC,CAAP;AAXsD;AAYvD;;AAED;;;;;;;AAOMV,iBAAN,CAAsBJ,UAAtB,EAAkCC,MAAlC,EAA0CC,UAA1C,EAAsD;AAAA;;AAAA;AACpD,UAAIL,MAAMc,OAAN,CAAcX,UAAd,KAA6BH,MAAMc,OAAN,CAAcV,MAAd,CAA7B,IAAsDJ,MAAMc,OAAN,CAAcT,UAAd,CAA1D,EAAqF;AACnF,eAAO,KAAP;AACD;;AAED,YAAMG,aAAa,MAAM,OAAKC,KAAL,CAAW,CAAX,EAAcC,KAAd,CAAoB,EAAC,MAAM,KAAP,EAApB,EAAmCC,KAAnC,CAAyC,EAACC,IAAI,EAAC,MAAM,CAACT,UAAD,EAAaC,MAAb,EAAqBC,UAArB,CAAP,EAAL,EAAzC,EAAyFQ,MAAzF,EAAzB;AACA,UAAIb,MAAMc,OAAN,CAAcN,UAAd,KAA6BA,WAAWO,MAAX,KAAsB,CAAvD,EAA0D;AACxD,eAAO,KAAP;AACD;;AAED;AACA,UAAInB,EAAEsB,GAAF,CAAMV,UAAN,EAAkB,CAAC,GAAD,EAAM,IAAN,CAAlB,MAAmCZ,EAAEsB,GAAF,CAAMV,UAAN,EAAkB,CAAC,GAAD,EAAM,WAAN,CAAlB,CAAvC,EAA8E;AAC5E,eAAO,KAAP;AACD;;AAED,UAAIZ,EAAEsB,GAAF,CAAMV,UAAN,EAAkB,CAAC,GAAD,EAAM,IAAN,CAAlB,MAAmCZ,EAAEsB,GAAF,CAAMV,UAAN,EAAkB,CAAC,GAAD,EAAM,WAAN,CAAlB,CAAvC,EAA8E;AAC5E,eAAO,KAAP;AACD;;AAED,aAAO,IAAP;AAnBoD;AAoBrD;;AAED;;;;;AAKMW,eAAN,CAAoBC,QAApB,EAA8B;AAAA;;AAAA;AAC5B,aAAO,OAAKT,KAAL,CAAW,EAACC,IAAIQ,QAAL,EAAX,EAA2BC,QAA3B,CAAoC,MAApC,EAA4C,IAA5C,CAAP;AAD4B;AAE7B;;AAED;;;;;AAKMC,eAAN,CAAoBC,QAApB,EAA8B;AAAA;;AAAA;AAC5B,aAAO,OAAKZ,KAAL,CAAW,EAACa,WAAWD,QAAZ,EAAX,EAAkCV,MAAlC,EAAP;AAD4B;AAE7B;;AAED;;;;;AAKMY,eAAN,CAAoBL,QAApB,EAA8B;AAAA;;AAAA;AAC5B,aAAO,OAAKT,KAAL,CAAW,EAACC,IAAIQ,QAAL,EAAX,EAA2BM,IAA3B,EAAP;AAD4B;AAE7B;AA5EwC,CAA3C",
+    "file": "..\\..\\..\\src\\api\\model\\region.js",
+    "sourcesContent": [
+        "const _ = require('lodash');\n\nmodule.exports = class extends think.Model {\n  /**\n   * 获取完整的省市区名称组成的字符串\n   * @param provinceId\n   * @param cityId\n   * @param districtId\n   * @returns {Promise.<*>}\n   */\n  async getFullRegionName(provinceId, cityId, districtId) {\n    const isFullRegion = await this.checkFullRegion(provinceId, cityId, districtId);\n    if (!isFullRegion) {\n      return '';\n    }\n\n    const regionList = await this.limit(3).order({'id': 'asc'}).where({id: {'in': [provinceId, cityId, districtId]}}).select();\n    if (think.isEmpty(regionList) || regionList.length !== 3) {\n      return '';\n    }\n\n    return _.flatMap(regionList, 'name').join('');\n  }\n\n  /**\n   * 检查省市区信息是否完整和正确\n   * @param provinceId\n   * @param cityId\n   * @param districtId\n   * @returns {Promise.<boolean>}\n   */\n  async checkFullRegion(provinceId, cityId, districtId) {\n    if (think.isEmpty(provinceId) || think.isEmpty(cityId) || think.isEmpty(districtId)) {\n      return false;\n    }\n\n    const regionList = await this.limit(3).order({'id': 'asc'}).where({id: {'in': [provinceId, cityId, districtId]}}).select();\n    if (think.isEmpty(regionList) || regionList.length !== 3) {\n      return false;\n    }\n\n    // 上下级关系检查\n    if (_.get(regionList, ['0', 'id']) !== _.get(regionList, ['1', 'parent_id'])) {\n      return false;\n    }\n\n    if (_.get(regionList, ['1', 'id']) !== _.get(regionList, ['2', 'parent_id'])) {\n      return false;\n    }\n\n    return true;\n  }\n\n  /**\n   * 获取区域的名称\n   * @param regionId\n   * @returns {Promise.<*>}\n   */\n  async getRegionName(regionId) {\n    return this.where({id: regionId}).getField('name', true);\n  }\n\n  /**\n   * 获取下级的地区列表\n   * @param parentId\n   * @returns {Promise.<*>}\n   */\n  async getRegionList(parentId) {\n    return this.where({parent_id: parentId}).select();\n  }\n\n  /**\n   * 获取区域的信息\n   * @param regionId\n   * @returns {Promise.<*>}\n   */\n  async getRegionInfo(regionId) {\n    return this.where({id: regionId}).find();\n  }\n};\n"
+    ]
+}

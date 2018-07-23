@@ -1,0 +1,49 @@
+{
+    "version": 3,
+    "sources": [
+        "..\\..\\..\\src\\admin\\controller\\auth.js"
+    ],
+    "names": [
+        "Base",
+        "require",
+        "module",
+        "exports",
+        "loginAction",
+        "username",
+        "post",
+        "password",
+        "admin",
+        "model",
+        "where",
+        "find",
+        "think",
+        "isEmpty",
+        "fail",
+        "md5",
+        "password_salt",
+        "id",
+        "update",
+        "last_login_time",
+        "parseInt",
+        "Date",
+        "now",
+        "last_login_ip",
+        "ctx",
+        "ip",
+        "TokenSerivce",
+        "service",
+        "sessionKey",
+        "create",
+        "user_id",
+        "userInfo",
+        "avatar",
+        "admin_role_id",
+        "success",
+        "token"
+    ],
+    "mappings": ";;AAAA,MAAMA,OAAOC,QAAQ,WAAR,CAAb;;AAEAC,OAAOC,OAAP,GAAiB,cAAcH,IAAd,CAAmB;AAC5BI,aAAN,GAAoB;AAAA;;AAAA;AAClB,YAAMC,WAAW,MAAKC,IAAL,CAAU,UAAV,CAAjB;AACA,YAAMC,WAAW,MAAKD,IAAL,CAAU,UAAV,CAAjB;;AAEA,YAAME,QAAQ,MAAM,MAAKC,KAAL,CAAW,OAAX,EAAoBC,KAApB,CAA0B,EAAEL,UAAUA,QAAZ,EAA1B,EAAkDM,IAAlD,EAApB;AACA,UAAIC,MAAMC,OAAN,CAAcL,KAAd,CAAJ,EAA0B;AACxB,eAAO,MAAKM,IAAL,CAAU,GAAV,EAAe,YAAf,CAAP;AACD;;AAED,UAAIF,MAAMG,GAAN,CAAUR,WAAW,EAAX,GAAgBC,MAAMQ,aAAhC,MAAmDR,MAAMD,QAA7D,EAAuE;AACrE,eAAO,MAAKO,IAAL,CAAU,GAAV,EAAe,YAAf,CAAP;AACD;;AAED;AACA,YAAM,MAAKL,KAAL,CAAW,OAAX,EAAoBC,KAApB,CAA0B,EAAEO,IAAIT,MAAMS,EAAZ,EAA1B,EAA4CC,MAA5C,CAAmD;AACvDC,yBAAiBC,SAASC,KAAKC,GAAL,KAAa,IAAtB,CADsC;AAEvDC,uBAAe,MAAKC,GAAL,CAASC;AAF+B,OAAnD,CAAN;;AAKA,YAAMC,eAAe,MAAKC,OAAL,CAAa,OAAb,EAAsB,OAAtB,CAArB;AACA,YAAMC,aAAa,MAAMF,aAAaG,MAAb,CAAoB;AAC3CC,iBAAStB,MAAMS;AAD4B,OAApB,CAAzB;;AAIA,UAAIL,MAAMC,OAAN,CAAce,UAAd,CAAJ,EAA+B;AAC7B,eAAO,MAAKd,IAAL,CAAU,MAAV,CAAP;AACD;;AAED,YAAMiB,WAAW;AACfd,YAAIT,MAAMS,EADK;AAEfZ,kBAAUG,MAAMH,QAFD;AAGf2B,gBAAQxB,MAAMwB,MAHC;AAIfC,uBAAezB,MAAMyB;AAJN,OAAjB;;AAOA,aAAO,MAAKC,OAAL,CAAa,EAAEC,OAAOP,UAAT,EAAqBG,UAAUA,QAA/B,EAAb,CAAP;AAnCkB;AAoCnB;AArCiC,CAApC",
+    "file": "..\\..\\..\\src\\admin\\controller\\auth.js",
+    "sourcesContent": [
+        "const Base = require('./base.js');\n\nmodule.exports = class extends Base {\n  async loginAction() {\n    const username = this.post('username');\n    const password = this.post('password');\n\n    const admin = await this.model('admin').where({ username: username }).find();\n    if (think.isEmpty(admin)) {\n      return this.fail(401, '用户名或密码不正确1');\n    }\n\n    if (think.md5(password + '' + admin.password_salt) !== admin.password) {\n      return this.fail(400, '用户名或密码不正确2');\n    }\n\n    // 更新登录信息\n    await this.model('admin').where({ id: admin.id }).update({\n      last_login_time: parseInt(Date.now() / 1000),\n      last_login_ip: this.ctx.ip\n    });\n\n    const TokenSerivce = this.service('token', 'admin');\n    const sessionKey = await TokenSerivce.create({\n      user_id: admin.id\n    });\n\n    if (think.isEmpty(sessionKey)) {\n      return this.fail('登录失败');\n    }\n\n    const userInfo = {\n      id: admin.id,\n      username: admin.username,\n      avatar: admin.avatar,\n      admin_role_id: admin.admin_role_id\n    };\n\n    return this.success({ token: sessionKey, userInfo: userInfo });\n  }\n};\n"
+    ]
+}

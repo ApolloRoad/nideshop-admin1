@@ -1,0 +1,12 @@
+{
+    "version": 3,
+    "sources": [
+        "..\\..\\..\\src\\common\\bootstrap\\master.js"
+    ],
+    "names": [],
+    "mappings": "AAAA",
+    "file": "..\\..\\..\\src\\common\\bootstrap\\master.js",
+    "sourcesContent": [
+        "// invoked in master\n"
+    ]
+}

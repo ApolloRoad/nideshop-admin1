@@ -1,0 +1,38 @@
+{
+    "version": 3,
+    "sources": [
+        "..\\..\\..\\src\\api\\controller\\base.js"
+    ],
+    "names": [
+        "module",
+        "exports",
+        "think",
+        "Controller",
+        "__before",
+        "token",
+        "ctx",
+        "header",
+        "tokenSerivce",
+        "service",
+        "userId",
+        "getUserId",
+        "publicController",
+        "config",
+        "publicAction",
+        "controllerAction",
+        "controller",
+        "action",
+        "includes",
+        "fail",
+        "getTime",
+        "parseInt",
+        "Date",
+        "now",
+        "getLoginUserId"
+    ],
+    "mappings": ";;AAAAA,OAAOC,OAAP,GAAiB,cAAcC,MAAMC,UAApB,CAA+B;AACxCC,UAAN,GAAiB;AAAA;;AAAA;AACf;AACAF,YAAMG,KAAN,GAAc,MAAKC,GAAL,CAASC,MAAT,CAAgB,kBAAhB,KAAuC,EAArD;AACA,YAAMC,eAAeN,MAAMO,OAAN,CAAc,OAAd,EAAuB,KAAvB,CAArB;AACAP,YAAMQ,MAAN,GAAe,MAAMF,aAAaG,SAAb,EAArB;;AAEA,YAAMC,mBAAmB,MAAKC,MAAL,CAAY,kBAAZ,CAAzB;AACA,YAAMC,eAAe,MAAKD,MAAL,CAAY,cAAZ,CAArB;AACA;AACA,YAAME,mBAAmB,MAAKT,GAAL,CAASU,UAAT,GAAsB,GAAtB,GAA4B,MAAKV,GAAL,CAASW,MAA9D;AACA,UAAI,CAACL,iBAAiBM,QAAjB,CAA0B,MAAKZ,GAAL,CAASU,UAAnC,CAAD,IAAmD,CAACF,aAAaI,QAAb,CAAsBH,gBAAtB,CAAxD,EAAiG;AAC/F,YAAIb,MAAMQ,MAAN,IAAgB,CAApB,EAAuB;AACrB,iBAAO,MAAKS,IAAL,CAAU,GAAV,EAAe,MAAf,CAAP;AACD;AACF;AAdc;AAehB;;AAED;;;;AAIAC,YAAU;AACR,WAAOC,SAASC,KAAKC,GAAL,KAAa,IAAtB,CAAP;AACD;;AAED;;;;AAIAC,mBAAiB;AACf,WAAOtB,MAAMQ,MAAb;AACD;AAhC6C,CAAhD",
+    "file": "..\\..\\..\\src\\api\\controller\\base.js",
+    "sourcesContent": [
+        "module.exports = class extends think.Controller {\n  async __before() {\n    // 根据token值获取用户id\n    think.token = this.ctx.header['x-nideshop-token'] || '';\n    const tokenSerivce = think.service('token', 'api');\n    think.userId = await tokenSerivce.getUserId();\n\n    const publicController = this.config('publicController');\n    const publicAction = this.config('publicAction');\n    // 如果为非公开，则验证用户是否登录\n    const controllerAction = this.ctx.controller + '/' + this.ctx.action;\n    if (!publicController.includes(this.ctx.controller) && !publicAction.includes(controllerAction)) {\n      if (think.userId <= 0) {\n        return this.fail(401, '请先登录');\n      }\n    }\n  }\n\n  /**\n   * 获取时间戳\n   * @returns {Number}\n   */\n  getTime() {\n    return parseInt(Date.now() / 1000);\n  }\n\n  /**\n   * 获取当前登录用户的id\n   * @returns {*}\n   */\n  getLoginUserId() {\n    return think.userId;\n  }\n};\n"
+    ]
+}

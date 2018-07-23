@@ -1,0 +1,43 @@
+{
+    "version": 3,
+    "sources": [
+        "..\\..\\..\\src\\admin\\controller\\goods.js"
+    ],
+    "names": [
+        "Base",
+        "require",
+        "module",
+        "exports",
+        "indexAction",
+        "page",
+        "get",
+        "size",
+        "name",
+        "model",
+        "data",
+        "where",
+        "order",
+        "countSelect",
+        "success",
+        "infoAction",
+        "id",
+        "find",
+        "storeAction",
+        "isPost",
+        "values",
+        "post",
+        "is_on_sale",
+        "is_new",
+        "is_hot",
+        "update",
+        "add",
+        "destoryAction",
+        "limit",
+        "delete"
+    ],
+    "mappings": ";;AAAA,MAAMA,OAAOC,QAAQ,WAAR,CAAb;;AAEAC,OAAOC,OAAP,GAAiB,cAAcH,IAAd,CAAmB;AAClC;;;;AAIMI,aAAN,GAAoB;AAAA;;AAAA;AAClB,YAAMC,OAAO,MAAKC,GAAL,CAAS,MAAT,KAAoB,CAAjC;AACA,YAAMC,OAAO,MAAKD,GAAL,CAAS,MAAT,KAAoB,EAAjC;AACA,YAAME,OAAO,MAAKF,GAAL,CAAS,MAAT,KAAoB,EAAjC;;AAEA,YAAMG,QAAQ,MAAKA,KAAL,CAAW,OAAX,CAAd;AACA,YAAMC,OAAO,MAAMD,MAAME,KAAN,CAAY,EAACH,MAAM,CAAC,MAAD,EAAU,IAAGA,IAAK,GAAlB,CAAP,EAAZ,EAA2CI,KAA3C,CAAiD,CAAC,SAAD,CAAjD,EAA8DP,IAA9D,CAAmEA,IAAnE,EAAyEE,IAAzE,EAA+EM,WAA/E,EAAnB;;AAEA,aAAO,MAAKC,OAAL,CAAaJ,IAAb,CAAP;AARkB;AASnB;;AAEKK,YAAN,GAAmB;AAAA;;AAAA;AACjB,YAAMC,KAAK,OAAKV,GAAL,CAAS,IAAT,CAAX;AACA,YAAMG,QAAQ,OAAKA,KAAL,CAAW,OAAX,CAAd;AACA,YAAMC,OAAO,MAAMD,MAAME,KAAN,CAAY,EAACK,IAAIA,EAAL,EAAZ,EAAsBC,IAAtB,EAAnB;;AAEA,aAAO,OAAKH,OAAL,CAAaJ,IAAb,CAAP;AALiB;AAMlB;;AAEKQ,aAAN,GAAoB;AAAA;;AAAA;AAClB,UAAI,CAAC,OAAKC,MAAV,EAAkB;AAChB,eAAO,KAAP;AACD;;AAED,YAAMC,SAAS,OAAKC,IAAL,EAAf;AACA,YAAML,KAAK,OAAKK,IAAL,CAAU,IAAV,CAAX;;AAEA,YAAMZ,QAAQ,OAAKA,KAAL,CAAW,OAAX,CAAd;AACAW,aAAOE,UAAP,GAAoBF,OAAOE,UAAP,GAAoB,CAApB,GAAwB,CAA5C;AACAF,aAAOG,MAAP,GAAgBH,OAAOG,MAAP,GAAgB,CAAhB,GAAoB,CAApC;AACAH,aAAOI,MAAP,GAAgBJ,OAAOI,MAAP,GAAgB,CAAhB,GAAoB,CAApC;AACA,UAAIR,KAAK,CAAT,EAAY;AACV,cAAMP,MAAME,KAAN,CAAY,EAACK,IAAIA,EAAL,EAAZ,EAAsBS,MAAtB,CAA6BL,MAA7B,CAAN;AACD,OAFD,MAEO;AACL,eAAOA,OAAOJ,EAAd;AACA,cAAMP,MAAMiB,GAAN,CAAUN,MAAV,CAAN;AACD;AACD,aAAO,OAAKN,OAAL,CAAaM,MAAb,CAAP;AAlBkB;AAmBnB;;AAEKO,eAAN,GAAsB;AAAA;;AAAA;AACpB,YAAMX,KAAK,OAAKK,IAAL,CAAU,IAAV,CAAX;AACA,YAAM,OAAKZ,KAAL,CAAW,OAAX,EAAoBE,KAApB,CAA0B,EAACK,IAAIA,EAAL,EAA1B,EAAoCY,KAApC,CAA0C,CAA1C,EAA6CC,MAA7C,EAAN;AACA;;AAEA,aAAO,OAAKf,OAAL,EAAP;AALoB;AAMrB;AAnDiC,CAApC",
+    "file": "..\\..\\..\\src\\admin\\controller\\goods.js",
+    "sourcesContent": [
+        "const Base = require('./base.js');\n\nmodule.exports = class extends Base {\n  /**\n   * index action\n   * @return {Promise} []\n   */\n  async indexAction() {\n    const page = this.get('page') || 1;\n    const size = this.get('size') || 10;\n    const name = this.get('name') || '';\n\n    const model = this.model('goods');\n    const data = await model.where({name: ['like', `%${name}%`]}).order(['id DESC']).page(page, size).countSelect();\n\n    return this.success(data);\n  }\n\n  async infoAction() {\n    const id = this.get('id');\n    const model = this.model('goods');\n    const data = await model.where({id: id}).find();\n\n    return this.success(data);\n  }\n\n  async storeAction() {\n    if (!this.isPost) {\n      return false;\n    }\n\n    const values = this.post();\n    const id = this.post('id');\n\n    const model = this.model('goods');\n    values.is_on_sale = values.is_on_sale ? 1 : 0;\n    values.is_new = values.is_new ? 1 : 0;\n    values.is_hot = values.is_hot ? 1 : 0;\n    if (id > 0) {\n      await model.where({id: id}).update(values);\n    } else {\n      delete values.id;\n      await model.add(values);\n    }\n    return this.success(values);\n  }\n\n  async destoryAction() {\n    const id = this.post('id');\n    await this.model('goods').where({id: id}).limit(1).delete();\n    // TODO 删除图片\n\n    return this.success();\n  }\n};\n"
+    ]
+}

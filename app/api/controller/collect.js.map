@@ -1,0 +1,53 @@
+{
+    "version": 3,
+    "sources": [
+        "..\\..\\..\\src\\api\\controller\\collect.js"
+    ],
+    "names": [
+        "Base",
+        "require",
+        "module",
+        "exports",
+        "listAction",
+        "typeId",
+        "get",
+        "list",
+        "model",
+        "field",
+        "alias",
+        "join",
+        "table",
+        "as",
+        "on",
+        "where",
+        "user_id",
+        "think",
+        "userId",
+        "type_id",
+        "parseInt",
+        "countSelect",
+        "success",
+        "addordeleteAction",
+        "post",
+        "valueId",
+        "collect",
+        "value_id",
+        "find",
+        "collectRes",
+        "handleType",
+        "isEmpty",
+        "add",
+        "add_time",
+        "Date",
+        "getTime",
+        "id",
+        "delete",
+        "type",
+        "fail"
+    ],
+    "mappings": ";;AAAA,MAAMA,OAAOC,QAAQ,WAAR,CAAb;;AAEAC,OAAOC,OAAP,GAAiB,cAAcH,IAAd,CAAmB;AAC5BI,YAAN,GAAmB;AAAA;;AAAA;AACjB,YAAMC,SAAS,MAAKC,GAAL,CAAS,QAAT,CAAf;;AAEA,YAAMC,OAAO,MAAM,MAAKC,KAAL,CAAW,SAAX,EAChBC,KADgB,CACV,CAAC,KAAD,EAAQ,QAAR,EAAkB,gBAAlB,EAAoC,eAApC,EAAqD,gBAArD,CADU,EAEhBC,KAFgB,CAEV,GAFU,EAGhBC,IAHgB,CAGX;AACJC,eAAO,OADH;AAEJD,cAAM,MAFF;AAGJE,YAAI,GAHA;AAIJC,YAAI,CAAC,YAAD,EAAe,MAAf;AAJA,OAHW,EAQdC,KARc,CAQR,EAACC,SAASC,MAAMC,MAAhB,EAAwBC,SAASC,SAASf,MAAT,CAAjC,EARQ,EAQ4CgB,WAR5C,EAAnB;;AAUA,aAAO,MAAKC,OAAL,CAAaf,IAAb,CAAP;AAbiB;AAclB;;AAEKgB,mBAAN,GAA0B;AAAA;;AAAA;AACxB,YAAMlB,SAAS,OAAKmB,IAAL,CAAU,QAAV,CAAf;AACA,YAAMC,UAAU,OAAKD,IAAL,CAAU,SAAV,CAAhB;;AAEA,YAAME,UAAU,MAAM,OAAKlB,KAAL,CAAW,SAAX,EAAsBO,KAAtB,CAA4B,EAACI,SAASd,MAAV,EAAkBsB,UAAUF,OAA5B,EAAqCT,SAASC,MAAMC,MAApD,EAA5B,EAAyFU,IAAzF,EAAtB;AACA,UAAIC,aAAa,IAAjB;AACA,UAAIC,aAAa,KAAjB;AACA,UAAIb,MAAMc,OAAN,CAAcL,OAAd,CAAJ,EAA4B;AAC1B;AACAG,qBAAa,MAAM,OAAKrB,KAAL,CAAW,SAAX,EAAsBwB,GAAtB,CAA0B;AAC3Cb,mBAASd,MADkC;AAE3CsB,oBAAUF,OAFiC;AAG3CT,mBAASC,MAAMC,MAH4B;AAI3Ce,oBAAUb,SAAS,IAAIc,IAAJ,GAAWC,OAAX,KAAuB,IAAhC;AAJiC,SAA1B,CAAnB;AAMD,OARD,MAQO;AACL;AACAN,qBAAa,MAAM,OAAKrB,KAAL,CAAW,SAAX,EAAsBO,KAAtB,CAA4B,EAACqB,IAAIV,QAAQU,EAAb,EAA5B,EAA8CC,MAA9C,EAAnB;AACAP,qBAAa,QAAb;AACD;;AAED,UAAID,aAAa,CAAjB,EAAoB;AAClB,eAAO,OAAKP,OAAL,CAAa,EAACgB,MAAMR,UAAP,EAAb,CAAP;AACD;;AAED,aAAO,OAAKS,IAAL,CAAU,MAAV,CAAP;AAzBwB;AA0BzB;AA3CiC,CAApC",
+    "file": "..\\..\\..\\src\\api\\controller\\collect.js",
+    "sourcesContent": [
+        "const Base = require('./base.js');\n\nmodule.exports = class extends Base {\n  async listAction() {\n    const typeId = this.get('typeId');\n\n    const list = await this.model('collect')\n      .field(['c.*', 'g.name', 'g.list_pic_url', 'g.goods_brief', 'g.retail_price'])\n      .alias('c')\n      .join({\n        table: 'goods',\n        join: 'left',\n        as: 'g',\n        on: ['c.value_id', 'g.id']\n      }).where({user_id: think.userId, type_id: parseInt(typeId)}).countSelect();\n\n    return this.success(list);\n  }\n\n  async addordeleteAction() {\n    const typeId = this.post('typeId');\n    const valueId = this.post('valueId');\n\n    const collect = await this.model('collect').where({type_id: typeId, value_id: valueId, user_id: think.userId}).find();\n    let collectRes = null;\n    let handleType = 'add';\n    if (think.isEmpty(collect)) {\n      // 添加收藏\n      collectRes = await this.model('collect').add({\n        type_id: typeId,\n        value_id: valueId,\n        user_id: think.userId,\n        add_time: parseInt(new Date().getTime() / 1000)\n      });\n    } else {\n      // 取消收藏\n      collectRes = await this.model('collect').where({id: collect.id}).delete();\n      handleType = 'delete';\n    }\n\n    if (collectRes > 0) {\n      return this.success({type: handleType});\n    }\n\n    return this.fail('操作失败');\n  }\n};\n"
+    ]
+}

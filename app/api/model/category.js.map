@@ -1,0 +1,26 @@
+{
+    "version": 3,
+    "sources": [
+        "..\\..\\..\\src\\api\\model\\category.js"
+    ],
+    "names": [
+        "module",
+        "exports",
+        "think",
+        "Model",
+        "getChildCategoryId",
+        "parentId",
+        "childIds",
+        "where",
+        "parent_id",
+        "getField",
+        "getCategoryWhereIn",
+        "categoryId",
+        "push"
+    ],
+    "mappings": ";;AAAAA,OAAOC,OAAP,GAAiB,cAAcC,MAAMC,KAApB,CAA0B;AACnCC,oBAAN,CAAyBC,QAAzB,EAAmC;AAAA;;AAAA;AACjC,YAAMC,WAAW,MAAM,MAAKC,KAAL,CAAW,EAACC,WAAWH,QAAZ,EAAX,EAAkCI,QAAlC,CAA2C,IAA3C,EAAiD,KAAjD,CAAvB;AACA,aAAOH,QAAP;AAFiC;AAGlC;;AAEKI,oBAAN,CAAyBC,UAAzB,EAAqC;AAAA;;AAAA;AACnC,YAAML,WAAW,MAAM,OAAKF,kBAAL,CAAwBO,UAAxB,CAAvB;AACAL,eAASM,IAAT,CAAcD,UAAd;AACA,aAAOL,QAAP;AAHmC;AAIpC;AAVwC,CAA3C",
+    "file": "..\\..\\..\\src\\api\\model\\category.js",
+    "sourcesContent": [
+        "module.exports = class extends think.Model {\n  async getChildCategoryId(parentId) {\n    const childIds = await this.where({parent_id: parentId}).getField('id', 10000);\n    return childIds;\n  }\n\n  async getCategoryWhereIn(categoryId) {\n    const childIds = await this.getChildCategoryId(categoryId);\n    childIds.push(categoryId);\n    return childIds;\n  }\n};\n"
+    ]
+}

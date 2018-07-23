@@ -1,0 +1,50 @@
+{
+    "version": 3,
+    "sources": [
+        "..\\..\\..\\src\\admin\\controller\\order.js"
+    ],
+    "names": [
+        "Base",
+        "require",
+        "module",
+        "exports",
+        "indexAction",
+        "page",
+        "get",
+        "size",
+        "orderSn",
+        "consignee",
+        "model",
+        "data",
+        "where",
+        "order_sn",
+        "order",
+        "countSelect",
+        "newList",
+        "item",
+        "order_status_text",
+        "getOrderStatusText",
+        "id",
+        "push",
+        "success",
+        "infoAction",
+        "find",
+        "storeAction",
+        "isPost",
+        "values",
+        "post",
+        "is_show",
+        "is_new",
+        "update",
+        "add",
+        "destoryAction",
+        "limit",
+        "delete",
+        "order_id"
+    ],
+    "mappings": "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",
+    "file": "..\\..\\..\\src\\admin\\controller\\order.js",
+    "sourcesContent": [
+        "const Base = require('./base.js');\n\nmodule.exports = class extends Base {\n  /**\n   * index action\n   * @return {Promise} []\n   */\n  async indexAction() {\n    const page = this.get('page') || 1;\n    const size = this.get('size') || 10;\n    const orderSn = this.get('orderSn') || '';\n    const consignee = this.get('consignee') || '';\n\n    const model = this.model('order');\n    const data = await model.where({order_sn: ['like', `%${orderSn}%`], consignee: ['like', `%${consignee}%`]}).order(['id DESC']).page(page, size).countSelect();\n    const newList = [];\n    for (const item of data.data) {\n      item.order_status_text = await this.model('order').getOrderStatusText(item.id);\n      newList.push(item);\n    }\n    data.data = newList;\n    return this.success(data);\n  }\n\n  async infoAction() {\n    const id = this.get('id');\n    const model = this.model('order');\n    const data = await model.where({id: id}).find();\n\n    return this.success(data);\n  }\n\n  async storeAction() {\n    if (!this.isPost) {\n      return false;\n    }\n\n    const values = this.post();\n    const id = this.post('id');\n\n    const model = this.model('order');\n    values.is_show = values.is_show ? 1 : 0;\n    values.is_new = values.is_new ? 1 : 0;\n    if (id > 0) {\n      await model.where({id: id}).update(values);\n    } else {\n      delete values.id;\n      await model.add(values);\n    }\n    return this.success(values);\n  }\n\n  async destoryAction() {\n    const id = this.post('id');\n    await this.model('order').where({id: id}).limit(1).delete();\n\n    // 删除订单商品\n    await this.model('order_goods').where({order_id: id}).delete();\n\n    // TODO 事务，验证订单是否可删除（只有失效的订单才可以删除）\n\n    return this.success();\n  }\n};\n"
+    ]
+}

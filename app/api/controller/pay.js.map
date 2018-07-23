@@ -1,0 +1,52 @@
+{
+    "version": 3,
+    "sources": [
+        "..\\..\\..\\src\\api\\controller\\pay.js"
+    ],
+    "names": [
+        "Base",
+        "require",
+        "module",
+        "exports",
+        "prepayAction",
+        "orderId",
+        "get",
+        "orderInfo",
+        "model",
+        "where",
+        "id",
+        "find",
+        "think",
+        "isEmpty",
+        "fail",
+        "parseInt",
+        "pay_status",
+        "openid",
+        "user_id",
+        "getField",
+        "WeixinSerivce",
+        "service",
+        "returnParams",
+        "createUnifiedOrder",
+        "body",
+        "order_sn",
+        "out_trade_no",
+        "total_fee",
+        "actual_price",
+        "spbill_create_ip",
+        "success",
+        "err",
+        "notifyAction",
+        "result",
+        "payNotify",
+        "post",
+        "orderModel",
+        "getOrderByOrderSn",
+        "updatePayStatus"
+    ],
+    "mappings": ";;AAAA;AACA,MAAMA,OAAOC,QAAQ,WAAR,CAAb;;AAEAC,OAAOC,OAAP,GAAiB,cAAcH,IAAd,CAAmB;AAClC;;;;AAIMI,cAAN,GAAqB;AAAA;;AAAA;AACnB,YAAMC,UAAU,MAAKC,GAAL,CAAS,SAAT,CAAhB;;AAEA,YAAMC,YAAY,MAAM,MAAKC,KAAL,CAAW,OAAX,EAAoBC,KAApB,CAA0B,EAAEC,IAAIL,OAAN,EAA1B,EAA2CM,IAA3C,EAAxB;AACA,UAAIC,MAAMC,OAAN,CAAcN,SAAd,CAAJ,EAA8B;AAC5B,eAAO,MAAKO,IAAL,CAAU,GAAV,EAAe,OAAf,CAAP;AACD;AACD,UAAIC,SAASR,UAAUS,UAAnB,MAAmC,CAAvC,EAA0C;AACxC,eAAO,MAAKF,IAAL,CAAU,GAAV,EAAe,eAAf,CAAP;AACD;AACD,YAAMG,SAAS,MAAM,MAAKT,KAAL,CAAW,MAAX,EAAmBC,KAAnB,CAAyB,EAAEC,IAAIH,UAAUW,OAAhB,EAAzB,EAAoDC,QAApD,CAA6D,eAA7D,EAA8E,IAA9E,CAArB;AACA,UAAIP,MAAMC,OAAN,CAAcI,MAAd,CAAJ,EAA2B;AACzB,eAAO,MAAKH,IAAL,CAAU,QAAV,CAAP;AACD;AACD,YAAMM,gBAAgB,MAAKC,OAAL,CAAa,QAAb,EAAuB,KAAvB,CAAtB;AACA,UAAI;AACF,cAAMC,eAAe,MAAMF,cAAcG,kBAAd,CAAiC;AAC1DN,kBAAQA,MADkD;AAE1DO,gBAAM,UAAUjB,UAAUkB,QAFgC;AAG1DC,wBAAcnB,UAAUkB,QAHkC;AAI1DE,qBAAWZ,SAASR,UAAUqB,YAAV,GAAyB,GAAlC,CAJ+C;AAK1DC,4BAAkB;AALwC,SAAjC,CAA3B;AAOA,eAAO,MAAKC,OAAL,CAAaR,YAAb,CAAP;AACD,OATD,CASE,OAAOS,GAAP,EAAY;AACZ,eAAO,MAAKjB,IAAL,CAAU,QAAV,CAAP;AACD;AA1BkB;AA2BpB;;AAEKkB,cAAN,GAAqB;AAAA;;AAAA;AACnB,YAAMZ,gBAAgB,OAAKC,OAAL,CAAa,QAAb,EAAuB,KAAvB,CAAtB;AACA,YAAMY,SAASb,cAAcc,SAAd,CAAwB,OAAKC,IAAL,CAAU,KAAV,CAAxB,CAAf;AACA,UAAI,CAACF,MAAL,EAAa;AACX,eAAQ,iGAAR;AACD;;AAED,YAAMG,aAAa,OAAK5B,KAAL,CAAW,OAAX,CAAnB;AACA,YAAMD,YAAY,MAAM6B,WAAWC,iBAAX,CAA6BJ,OAAOP,YAApC,CAAxB;AACA,UAAId,MAAMC,OAAN,CAAcN,SAAd,CAAJ,EAA8B;AAC5B,eAAQ,kGAAR;AACD;;AAED,UAAI6B,WAAWE,eAAX,CAA2B/B,UAAUG,EAArC,EAAyC,CAAzC,CAAJ,EAAiD,CAChD,CADD,MACO;AACL,eAAQ,kGAAR;AACD;;AAED,aAAQ,kGAAR;AAlBmB;AAmBpB;AArDiC,CAApC",
+    "file": "..\\..\\..\\src\\api\\controller\\pay.js",
+    "sourcesContent": [
+        "/* eslint-disable no-multi-spaces */\nconst Base = require('./base.js');\n\nmodule.exports = class extends Base {\n  /**\n   * 获取支付的请求参数\n   * @returns {Promise<PreventPromise|void|Promise>}\n   */\n  async prepayAction() {\n    const orderId = this.get('orderId');\n\n    const orderInfo = await this.model('order').where({ id: orderId }).find();\n    if (think.isEmpty(orderInfo)) {\n      return this.fail(400, '订单已取消');\n    }\n    if (parseInt(orderInfo.pay_status) !== 0) {\n      return this.fail(400, '订单已支付，请不要重复操作');\n    }\n    const openid = await this.model('user').where({ id: orderInfo.user_id }).getField('weixin_openid', true);\n    if (think.isEmpty(openid)) {\n      return this.fail('微信支付失败');\n    }\n    const WeixinSerivce = this.service('weixin', 'api');\n    try {\n      const returnParams = await WeixinSerivce.createUnifiedOrder({\n        openid: openid,\n        body: '订单编号：' + orderInfo.order_sn,\n        out_trade_no: orderInfo.order_sn,\n        total_fee: parseInt(orderInfo.actual_price * 100),\n        spbill_create_ip: ''\n      });\n      return this.success(returnParams);\n    } catch (err) {\n      return this.fail('微信支付失败');\n    }\n  }\n\n  async notifyAction() {\n    const WeixinSerivce = this.service('weixin', 'api');\n    const result = WeixinSerivce.payNotify(this.post('xml'));\n    if (!result) {\n      return `<xml><return_code><![CDATA[FAIL]]></return_code><return_msg><![CDATA[支付失败]]></return_msg></xml>`;\n    }\n\n    const orderModel = this.model('order');\n    const orderInfo = await orderModel.getOrderByOrderSn(result.out_trade_no);\n    if (think.isEmpty(orderInfo)) {\n      return `<xml><return_code><![CDATA[FAIL]]></return_code><return_msg><![CDATA[订单不存在]]></return_msg></xml>`;\n    }\n\n    if (orderModel.updatePayStatus(orderInfo.id, 2)) {\n    } else {\n      return `<xml><return_code><![CDATA[FAIL]]></return_code><return_msg><![CDATA[订单不存在]]></return_msg></xml>`;\n    }\n\n    return `<xml><return_code><![CDATA[SUCCESS]]></return_code><return_msg><![CDATA[OK]]></return_msg></xml>`;\n  }\n};\n"
+    ]
+}

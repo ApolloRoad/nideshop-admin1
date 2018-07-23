@@ -1,0 +1,30 @@
+{
+    "version": 3,
+    "sources": [
+        "..\\..\\..\\src\\api\\controller\\brand.js"
+    ],
+    "names": [
+        "Base",
+        "require",
+        "module",
+        "exports",
+        "listAction",
+        "model",
+        "data",
+        "field",
+        "page",
+        "get",
+        "countSelect",
+        "success",
+        "detailAction",
+        "where",
+        "id",
+        "find",
+        "brand"
+    ],
+    "mappings": ";;AAAA,MAAMA,OAAOC,QAAQ,WAAR,CAAb;;AAEAC,OAAOC,OAAP,GAAiB,cAAcH,IAAd,CAAmB;AAC5BI,YAAN,GAAmB;AAAA;;AAAA;AACjB,YAAMC,QAAQ,MAAKA,KAAL,CAAW,OAAX,CAAd;AACA,YAAMC,OAAO,MAAMD,MAAME,KAAN,CAAY,CAAC,IAAD,EAAO,MAAP,EAAe,aAAf,EAA8B,kBAA9B,CAAZ,EAA+DC,IAA/D,CAAoE,MAAKC,GAAL,CAAS,MAAT,KAAoB,CAAxF,EAA2F,MAAKA,GAAL,CAAS,MAAT,KAAoB,EAA/G,EAAmHC,WAAnH,EAAnB;;AAEA,aAAO,MAAKC,OAAL,CAAaL,IAAb,CAAP;AAJiB;AAKlB;;AAEKM,cAAN,GAAqB;AAAA;;AAAA;AACnB,YAAMP,QAAQ,OAAKA,KAAL,CAAW,OAAX,CAAd;AACA,YAAMC,OAAO,MAAMD,MAAMQ,KAAN,CAAY,EAACC,IAAI,OAAKL,GAAL,CAAS,IAAT,CAAL,EAAZ,EAAkCM,IAAlC,EAAnB;;AAEA,aAAO,OAAKJ,OAAL,CAAa,EAACK,OAAOV,IAAR,EAAb,CAAP;AAJmB;AAKpB;AAbiC,CAApC",
+    "file": "..\\..\\..\\src\\api\\controller\\brand.js",
+    "sourcesContent": [
+        "const Base = require('./base.js');\n\nmodule.exports = class extends Base {\n  async listAction() {\n    const model = this.model('brand');\n    const data = await model.field(['id', 'name', 'floor_price', 'app_list_pic_url']).page(this.get('page') || 1, this.get('size') || 10).countSelect();\n\n    return this.success(data);\n  }\n\n  async detailAction() {\n    const model = this.model('brand');\n    const data = await model.where({id: this.get('id')}).find();\n\n    return this.success({brand: data});\n  }\n};\n"
+    ]
+}

@@ -1,0 +1,30 @@
+{
+    "version": 3,
+    "sources": [
+        "..\\..\\..\\src\\api\\model\\cart.js"
+    ],
+    "names": [
+        "module",
+        "exports",
+        "think",
+        "Model",
+        "getGoodsList",
+        "goodsList",
+        "model",
+        "where",
+        "user_id",
+        "userId",
+        "session_id",
+        "select",
+        "getCheckedGoodsList",
+        "checked",
+        "clearBuyGoods",
+        "$res",
+        "delete"
+    ],
+    "mappings": ";;AAAAA,OAAOC,OAAP,GAAiB,cAAcC,MAAMC,KAApB,CAA0B;AACzC;;;;AAIMC,cAAN,GAAqB;AAAA;;AAAA;AACnB,YAAMC,YAAY,MAAM,MAAKC,KAAL,CAAW,MAAX,EAAmBC,KAAnB,CAAyB,EAACC,SAASN,MAAMO,MAAhB,EAAwBC,YAAY,CAApC,EAAzB,EAAiEC,MAAjE,EAAxB;AACA,aAAON,SAAP;AAFmB;AAGpB;;AAED;;;;AAIMO,qBAAN,GAA4B;AAAA;;AAAA;AAC1B,YAAMP,YAAY,MAAM,OAAKC,KAAL,CAAW,MAAX,EAAmBC,KAAnB,CAAyB,EAACC,SAASN,MAAMO,MAAhB,EAAwBC,YAAY,CAApC,EAAuCG,SAAS,CAAhD,EAAzB,EAA6EF,MAA7E,EAAxB;AACA,aAAON,SAAP;AAF0B;AAG3B;;AAED;;;;AAIMS,eAAN,GAAsB;AAAA;;AAAA;AACpB,YAAMC,OAAO,MAAM,OAAKT,KAAL,CAAW,MAAX,EAAmBC,KAAnB,CAAyB,EAACC,SAASN,MAAMO,MAAhB,EAAwBC,YAAY,CAApC,EAAuCG,SAAS,CAAhD,EAAzB,EAA6EG,MAA7E,EAAnB;AACA,aAAOD,IAAP;AAFoB;AAGrB;AA1BwC,CAA3C",
+    "file": "..\\..\\..\\src\\api\\model\\cart.js",
+    "sourcesContent": [
+        "module.exports = class extends think.Model {\n  /**\n   * 获取购物车的商品\n   * @returns {Promise.<*>}\n   */\n  async getGoodsList() {\n    const goodsList = await this.model('cart').where({user_id: think.userId, session_id: 1}).select();\n    return goodsList;\n  }\n\n  /**\n   * 获取购物车的选中的商品\n   * @returns {Promise.<*>}\n   */\n  async getCheckedGoodsList() {\n    const goodsList = await this.model('cart').where({user_id: think.userId, session_id: 1, checked: 1}).select();\n    return goodsList;\n  }\n\n  /**\n   * 清空已购买的商品\n   * @returns {Promise.<*>}\n   */\n  async clearBuyGoods() {\n    const $res = await this.model('cart').where({user_id: think.userId, session_id: 1, checked: 1}).delete();\n    return $res;\n  }\n};\n"
+    ]
+}

@@ -1,0 +1,26 @@
+{
+    "version": 3,
+    "sources": [
+        "..\\..\\..\\src\\api\\controller\\region.js"
+    ],
+    "names": [
+        "Base",
+        "require",
+        "module",
+        "exports",
+        "infoAction",
+        "region",
+        "model",
+        "getRegionInfo",
+        "get",
+        "success",
+        "listAction",
+        "regionList",
+        "getRegionList"
+    ],
+    "mappings": ";;AAAA,MAAMA,OAAOC,QAAQ,WAAR,CAAb;;AAEAC,OAAOC,OAAP,GAAiB,cAAcH,IAAd,CAAmB;AAC5BI,YAAN,GAAmB;AAAA;;AAAA;AACjB,YAAMC,SAAS,MAAM,MAAKC,KAAL,CAAW,QAAX,EAAqBC,aAArB,CAAmC,MAAKC,GAAL,CAAS,UAAT,CAAnC,CAArB;AACA,aAAO,MAAKC,OAAL,CAAaJ,MAAb,CAAP;AAFiB;AAGlB;;AAEKK,YAAN,GAAmB;AAAA;;AAAA;AACjB,YAAMC,aAAa,MAAM,OAAKL,KAAL,CAAW,QAAX,EAAqBM,aAArB,CAAmC,OAAKJ,GAAL,CAAS,UAAT,CAAnC,CAAzB;AACA,aAAO,OAAKC,OAAL,CAAaE,UAAb,CAAP;AAFiB;AAGlB;AATiC,CAApC",
+    "file": "..\\..\\..\\src\\api\\controller\\region.js",
+    "sourcesContent": [
+        "const Base = require('./base.js');\n\nmodule.exports = class extends Base {\n  async infoAction() {\n    const region = await this.model('region').getRegionInfo(this.get('regionId'));\n    return this.success(region);\n  }\n\n  async listAction() {\n    const regionList = await this.model('region').getRegionList(this.get('parentId'));\n    return this.success(regionList);\n  }\n};\n"
+    ]
+}

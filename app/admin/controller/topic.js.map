@@ -1,0 +1,43 @@
+{
+    "version": 3,
+    "sources": [
+        "..\\..\\..\\src\\admin\\controller\\topic.js"
+    ],
+    "names": [
+        "Base",
+        "require",
+        "module",
+        "exports",
+        "indexAction",
+        "page",
+        "get",
+        "size",
+        "name",
+        "model",
+        "data",
+        "where",
+        "title",
+        "order",
+        "countSelect",
+        "success",
+        "infoAction",
+        "id",
+        "find",
+        "storeAction",
+        "isPost",
+        "values",
+        "post",
+        "is_show",
+        "is_new",
+        "update",
+        "add",
+        "destoryAction",
+        "limit",
+        "delete"
+    ],
+    "mappings": ";;AAAA,MAAMA,OAAOC,QAAQ,WAAR,CAAb;;AAEAC,OAAOC,OAAP,GAAiB,cAAcH,IAAd,CAAmB;AAClC;;;;AAIMI,aAAN,GAAoB;AAAA;;AAAA;AAClB,YAAMC,OAAO,MAAKC,GAAL,CAAS,MAAT,KAAoB,CAAjC;AACA,YAAMC,OAAO,MAAKD,GAAL,CAAS,MAAT,KAAoB,EAAjC;AACA,YAAME,OAAO,MAAKF,GAAL,CAAS,MAAT,KAAoB,EAAjC;;AAEA,YAAMG,QAAQ,MAAKA,KAAL,CAAW,OAAX,CAAd;AACA,YAAMC,OAAO,MAAMD,MAAME,KAAN,CAAY,EAACC,OAAO,CAAC,MAAD,EAAU,IAAGJ,IAAK,GAAlB,CAAR,EAAZ,EAA4CK,KAA5C,CAAkD,CAAC,SAAD,CAAlD,EAA+DR,IAA/D,CAAoEA,IAApE,EAA0EE,IAA1E,EAAgFO,WAAhF,EAAnB;;AAEA,aAAO,MAAKC,OAAL,CAAaL,IAAb,CAAP;AARkB;AASnB;;AAEKM,YAAN,GAAmB;AAAA;;AAAA;AACjB,YAAMC,KAAK,OAAKX,GAAL,CAAS,IAAT,CAAX;AACA,YAAMG,QAAQ,OAAKA,KAAL,CAAW,OAAX,CAAd;AACA,YAAMC,OAAO,MAAMD,MAAME,KAAN,CAAY,EAACM,IAAIA,EAAL,EAAZ,EAAsBC,IAAtB,EAAnB;;AAEA,aAAO,OAAKH,OAAL,CAAaL,IAAb,CAAP;AALiB;AAMlB;;AAEKS,aAAN,GAAoB;AAAA;;AAAA;AAClB,UAAI,CAAC,OAAKC,MAAV,EAAkB;AAChB,eAAO,KAAP;AACD;;AAED,YAAMC,SAAS,OAAKC,IAAL,EAAf;AACA,YAAML,KAAK,OAAKK,IAAL,CAAU,IAAV,CAAX;;AAEA,YAAMb,QAAQ,OAAKA,KAAL,CAAW,OAAX,CAAd;AACAY,aAAOE,OAAP,GAAiBF,OAAOE,OAAP,GAAiB,CAAjB,GAAqB,CAAtC;AACAF,aAAOG,MAAP,GAAgBH,OAAOG,MAAP,GAAgB,CAAhB,GAAoB,CAApC;AACA,UAAIP,KAAK,CAAT,EAAY;AACV,cAAMR,MAAME,KAAN,CAAY,EAACM,IAAIA,EAAL,EAAZ,EAAsBQ,MAAtB,CAA6BJ,MAA7B,CAAN;AACD,OAFD,MAEO;AACL,eAAOA,OAAOJ,EAAd;AACA,cAAMR,MAAMiB,GAAN,CAAUL,MAAV,CAAN;AACD;AACD,aAAO,OAAKN,OAAL,CAAaM,MAAb,CAAP;AAjBkB;AAkBnB;;AAEKM,eAAN,GAAsB;AAAA;;AAAA;AACpB,YAAMV,KAAK,OAAKK,IAAL,CAAU,IAAV,CAAX;AACA,YAAM,OAAKb,KAAL,CAAW,OAAX,EAAoBE,KAApB,CAA0B,EAACM,IAAIA,EAAL,EAA1B,EAAoCW,KAApC,CAA0C,CAA1C,EAA6CC,MAA7C,EAAN;AACA;;AAEA,aAAO,OAAKd,OAAL,EAAP;AALoB;AAMrB;AAlDiC,CAApC",
+    "file": "..\\..\\..\\src\\admin\\controller\\topic.js",
+    "sourcesContent": [
+        "const Base = require('./base.js');\n\nmodule.exports = class extends Base {\n  /**\n   * index action\n   * @return {Promise} []\n   */\n  async indexAction() {\n    const page = this.get('page') || 1;\n    const size = this.get('size') || 10;\n    const name = this.get('name') || '';\n\n    const model = this.model('topic');\n    const data = await model.where({title: ['like', `%${name}%`]}).order(['id DESC']).page(page, size).countSelect();\n\n    return this.success(data);\n  }\n\n  async infoAction() {\n    const id = this.get('id');\n    const model = this.model('topic');\n    const data = await model.where({id: id}).find();\n\n    return this.success(data);\n  }\n\n  async storeAction() {\n    if (!this.isPost) {\n      return false;\n    }\n\n    const values = this.post();\n    const id = this.post('id');\n\n    const model = this.model('topic');\n    values.is_show = values.is_show ? 1 : 0;\n    values.is_new = values.is_new ? 1 : 0;\n    if (id > 0) {\n      await model.where({id: id}).update(values);\n    } else {\n      delete values.id;\n      await model.add(values);\n    }\n    return this.success(values);\n  }\n\n  async destoryAction() {\n    const id = this.post('id');\n    await this.model('topic').where({id: id}).limit(1).delete();\n    // TODO 删除图片\n\n    return this.success();\n  }\n};\n"
+    ]
+}

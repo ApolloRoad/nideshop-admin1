@@ -1,0 +1,53 @@
+{
+    "version": 3,
+    "sources": [
+        "..\\..\\..\\src\\api\\model\\order_express.js"
+    ],
+    "names": [
+        "module",
+        "exports",
+        "think",
+        "Model",
+        "tableName",
+        "tablePrefix",
+        "getLatestOrderExpress",
+        "orderId",
+        "returnExpressInfo",
+        "shipper_code",
+        "shipper_name",
+        "logistic_code",
+        "is_finish",
+        "request_time",
+        "traces",
+        "orderExpress",
+        "where",
+        "order_id",
+        "find",
+        "isEmpty",
+        "datetime",
+        "JSON",
+        "parse",
+        "ExpressSerivce",
+        "service",
+        "latestExpressInfo",
+        "queryExpress",
+        "nowTime",
+        "Number",
+        "parseInt",
+        "Date",
+        "now",
+        "updateData",
+        "update_time",
+        "request_count",
+        "success",
+        "isFinish",
+        "stringify",
+        "id",
+        "update"
+    ],
+    "mappings": ";;AAAAA,OAAOC,OAAP,GAAiB,cAAcC,MAAMC,KAApB,CAA0B;AACzC,MAAIC,SAAJ,GAAgB;AACd,WAAO,KAAKC,WAAL,GAAmB,eAA1B;AACD;;AAED;;;;;AAKMC,uBAAN,CAA4BC,OAA5B,EAAqC;AAAA;;AAAA;AACnC,YAAMC,oBAAoB;AACxBC,sBAAc,EADU;AAExBC,sBAAc,EAFU;AAGxBC,uBAAe,EAHS;AAIxBC,mBAAW,CAJa;AAKxBC,sBAAc,CALU;AAMxBC,gBAAQ;AANgB,OAA1B;AAQA,YAAMC,eAAe,MAAM,MAAKC,KAAL,CAAW,EAAEC,UAAUV,OAAZ,EAAX,EAAkCW,IAAlC,EAA3B;AACA,UAAIhB,MAAMiB,OAAN,CAAcJ,YAAd,CAAJ,EAAiC;AAC/B,eAAOP,iBAAP;AACD;AACD,UAAIN,MAAMiB,OAAN,CAAcJ,aAAaN,YAA3B,KAA4CP,MAAMiB,OAAN,CAAcJ,aAAaJ,aAA3B,CAAhD,EAA2F;AACzF,eAAOH,iBAAP;AACD;;AAEDA,wBAAkBC,YAAlB,GAAiCM,aAAaN,YAA9C;AACAD,wBAAkBE,YAAlB,GAAiCK,aAAaL,YAA9C;AACAF,wBAAkBG,aAAlB,GAAkCI,aAAaJ,aAA/C;AACAH,wBAAkBI,SAAlB,GAA8BG,aAAaH,SAA3C;AACAJ,wBAAkBK,YAAlB,GAAiCX,MAAMkB,QAAN,CAAeL,aAAaF,YAAb,GAA4B,IAA3C,CAAjC;AACAL,wBAAkBM,MAAlB,GAA2BZ,MAAMiB,OAAN,CAAcJ,aAAaD,MAA3B,IAAqC,EAArC,GAA0CO,KAAKC,KAAL,CAAWP,aAAaD,MAAxB,CAArE;;AAEA;AACA,UAAIC,aAAaH,SAAjB,EAA4B;AAC1B,eAAOJ,iBAAP;AACD;;AAED;AACA,YAAMe,iBAAiBrB,MAAMsB,OAAN,CAAc,SAAd,EAAyB,KAAzB,CAAvB;AACA,YAAMC,oBAAoB,MAAMF,eAAeG,YAAf,CAA4BX,aAAaN,YAAzC,EAAuDM,aAAaJ,aAApE,CAAhC;AACA,YAAMgB,UAAUC,OAAOC,QAAP,CAAgBC,KAAKC,GAAL,KAAa,IAA7B,CAAhB;AACA,YAAMC,aAAa;AACjBnB,sBAAcc,OADG;AAEjBM,qBAAaN,OAFI;AAGjBO,uBAAe,CAAC,KAAD,EAAQ,iBAAR;AAHE,OAAnB;AAKA,UAAIT,kBAAkBU,OAAtB,EAA+B;AAC7B3B,0BAAkBM,MAAlB,GAA2BW,kBAAkBX,MAA7C;AACAN,0BAAkBI,SAAlB,GAA8Ba,kBAAkBW,QAAhD;AACA;AACAJ,mBAAWlB,MAAX,GAAoBO,KAAKgB,SAAL,CAAeZ,kBAAkBX,MAAjC,CAApB;AACAN,0BAAkBK,YAAlB,GAAiCX,MAAMkB,QAAN,CAAeO,UAAU,IAAzB,CAAjC;AACAK,mBAAWpB,SAAX,GAAuBa,kBAAkBW,QAAzC;AACD;AACD,YAAM,MAAKpB,KAAL,CAAW,EAAEsB,IAAIvB,aAAauB,EAAnB,EAAX,EAAoCC,MAApC,CAA2CP,UAA3C,CAAN;AACA,aAAOxB,iBAAP;AA/CmC;AAgDpC;AA1DwC,CAA3C",
+    "file": "..\\..\\..\\src\\api\\model\\order_express.js",
+    "sourcesContent": [
+        "module.exports = class extends think.Model {\n  get tableName() {\n    return this.tablePrefix + 'order_express';\n  }\n\n  /**\n   * 获取最新的订单物流信息\n   * @param orderId\n   * @returns {Promise.<*>}\n   */\n  async getLatestOrderExpress(orderId) {\n    const returnExpressInfo = {\n      shipper_code: '',\n      shipper_name: '',\n      logistic_code: '',\n      is_finish: 0,\n      request_time: 0,\n      traces: []\n    };\n    const orderExpress = await this.where({ order_id: orderId }).find();\n    if (think.isEmpty(orderExpress)) {\n      return returnExpressInfo;\n    }\n    if (think.isEmpty(orderExpress.shipper_code) || think.isEmpty(orderExpress.logistic_code)) {\n      return returnExpressInfo;\n    }\n\n    returnExpressInfo.shipper_code = orderExpress.shipper_code;\n    returnExpressInfo.shipper_name = orderExpress.shipper_name;\n    returnExpressInfo.logistic_code = orderExpress.logistic_code;\n    returnExpressInfo.is_finish = orderExpress.is_finish;\n    returnExpressInfo.request_time = think.datetime(orderExpress.request_time * 1000);\n    returnExpressInfo.traces = think.isEmpty(orderExpress.traces) ? [] : JSON.parse(orderExpress.traces);\n\n    // 如果物流配送已完成，直接返回\n    if (orderExpress.is_finish) {\n      return returnExpressInfo;\n    }\n\n    // 查询最新物流信息\n    const ExpressSerivce = think.service('express', 'api');\n    const latestExpressInfo = await ExpressSerivce.queryExpress(orderExpress.shipper_code, orderExpress.logistic_code);\n    const nowTime = Number.parseInt(Date.now() / 1000);\n    const updateData = {\n      request_time: nowTime,\n      update_time: nowTime,\n      request_count: ['EXP', 'request_count+1']\n    };\n    if (latestExpressInfo.success) {\n      returnExpressInfo.traces = latestExpressInfo.traces;\n      returnExpressInfo.is_finish = latestExpressInfo.isFinish;\n      // 查询成功则更新订单物流信息\n      updateData.traces = JSON.stringify(latestExpressInfo.traces);\n      returnExpressInfo.request_time = think.datetime(nowTime * 1000);\n      updateData.is_finish = latestExpressInfo.isFinish;\n    }\n    await this.where({ id: orderExpress.id }).update(updateData);\n    return returnExpressInfo;\n  }\n};\n"
+    ]
+}

@@ -1,0 +1,48 @@
+{
+    "version": 3,
+    "sources": [
+        "..\\..\\..\\src\\admin\\controller\\category.js"
+    ],
+    "names": [
+        "Base",
+        "require",
+        "module",
+        "exports",
+        "indexAction",
+        "model",
+        "data",
+        "where",
+        "is_show",
+        "order",
+        "select",
+        "topCategory",
+        "filter",
+        "item",
+        "parent_id",
+        "categoryList",
+        "map",
+        "level",
+        "push",
+        "child",
+        "id",
+        "success",
+        "topCategoryAction",
+        "infoAction",
+        "get",
+        "find",
+        "storeAction",
+        "isPost",
+        "values",
+        "post",
+        "update",
+        "add",
+        "destoryAction",
+        "limit",
+        "delete"
+    ],
+    "mappings": ";;AAAA,MAAMA,OAAOC,QAAQ,WAAR,CAAb;;AAEAC,OAAOC,OAAP,GAAiB,cAAcH,IAAd,CAAmB;AAClC;;;;AAIMI,aAAN,GAAoB;AAAA;;AAAA;AAClB,YAAMC,QAAQ,MAAKA,KAAL,CAAW,UAAX,CAAd;AACA,YAAMC,OAAO,MAAMD,MAAME,KAAN,CAAY,EAACC,SAAS,CAAV,EAAZ,EAA0BC,KAA1B,CAAgC,CAAC,gBAAD,CAAhC,EAAoDC,MAApD,EAAnB;AACA,YAAMC,cAAcL,KAAKM,MAAL,CAAY,UAACC,IAAD,EAAU;AACxC,eAAOA,KAAKC,SAAL,KAAmB,CAA1B;AACD,OAFmB,CAApB;AAGA,YAAMC,eAAe,EAArB;AACAJ,kBAAYK,GAAZ,CAAgB,UAACH,IAAD,EAAU;AACxBA,aAAKI,KAAL,GAAa,CAAb;AACAF,qBAAaG,IAAb,CAAkBL,IAAlB;AACAP,aAAKU,GAAL,CAAS,UAACG,KAAD,EAAW;AAClB,cAAIA,MAAML,SAAN,KAAoBD,KAAKO,EAA7B,EAAiC;AAC/BD,kBAAMF,KAAN,GAAc,CAAd;AACAF,yBAAaG,IAAb,CAAkBC,KAAlB;AACD;AACF,SALD;AAMD,OATD;AAUA,aAAO,MAAKE,OAAL,CAAaN,YAAb,CAAP;AAjBkB;AAkBnB;;AAEKO,mBAAN,GAA0B;AAAA;;AAAA;AACxB,YAAMjB,QAAQ,OAAKA,KAAL,CAAW,UAAX,CAAd;AACA,YAAMC,OAAO,MAAMD,MAAME,KAAN,CAAY,EAACO,WAAW,CAAZ,EAAZ,EAA4BL,KAA5B,CAAkC,CAAC,QAAD,CAAlC,EAA8CC,MAA9C,EAAnB;;AAEA,aAAO,OAAKW,OAAL,CAAaf,IAAb,CAAP;AAJwB;AAKzB;;AAEKiB,YAAN,GAAmB;AAAA;;AAAA;AACjB,YAAMH,KAAK,OAAKI,GAAL,CAAS,IAAT,CAAX;AACA,YAAMnB,QAAQ,OAAKA,KAAL,CAAW,UAAX,CAAd;AACA,YAAMC,OAAO,MAAMD,MAAME,KAAN,CAAY,EAACa,IAAIA,EAAL,EAAZ,EAAsBK,IAAtB,EAAnB;;AAEA,aAAO,OAAKJ,OAAL,CAAaf,IAAb,CAAP;AALiB;AAMlB;;AAEKoB,aAAN,GAAoB;AAAA;;AAAA;AAClB,UAAI,CAAC,OAAKC,MAAV,EAAkB;AAChB,eAAO,KAAP;AACD;;AAED,YAAMC,SAAS,OAAKC,IAAL,EAAf;AACA,YAAMT,KAAK,OAAKS,IAAL,CAAU,IAAV,CAAX;;AAEA,YAAMxB,QAAQ,OAAKA,KAAL,CAAW,UAAX,CAAd;AACAuB,aAAOpB,OAAP,GAAiBoB,OAAOpB,OAAP,GAAiB,CAAjB,GAAqB,CAAtC;AACA,UAAIY,KAAK,CAAT,EAAY;AACV,cAAMf,MAAME,KAAN,CAAY,EAACa,IAAIA,EAAL,EAAZ,EAAsBU,MAAtB,CAA6BF,MAA7B,CAAN;AACD,OAFD,MAEO;AACL,eAAOA,OAAOR,EAAd;AACA,cAAMf,MAAM0B,GAAN,CAAUH,MAAV,CAAN;AACD;AACD,aAAO,OAAKP,OAAL,CAAaO,MAAb,CAAP;AAhBkB;AAiBnB;;AAEKI,eAAN,GAAsB;AAAA;;AAAA;AACpB,YAAMZ,KAAK,OAAKS,IAAL,CAAU,IAAV,CAAX;AACA,YAAM,OAAKxB,KAAL,CAAW,UAAX,EAAuBE,KAAvB,CAA6B,EAACa,IAAIA,EAAL,EAA7B,EAAuCa,KAAvC,CAA6C,CAA7C,EAAgDC,MAAhD,EAAN;AACA;;AAEA,aAAO,OAAKb,OAAL,EAAP;AALoB;AAMrB;AAjEiC,CAApC",
+    "file": "..\\..\\..\\src\\admin\\controller\\category.js",
+    "sourcesContent": [
+        "const Base = require('./base.js');\n\nmodule.exports = class extends Base {\n  /**\n   * index action\n   * @return {Promise} []\n   */\n  async indexAction() {\n    const model = this.model('category');\n    const data = await model.where({is_show: 1}).order(['sort_order ASC']).select();\n    const topCategory = data.filter((item) => {\n      return item.parent_id === 0;\n    });\n    const categoryList = [];\n    topCategory.map((item) => {\n      item.level = 1;\n      categoryList.push(item);\n      data.map((child) => {\n        if (child.parent_id === item.id) {\n          child.level = 2;\n          categoryList.push(child);\n        }\n      });\n    });\n    return this.success(categoryList);\n  }\n\n  async topCategoryAction() {\n    const model = this.model('category');\n    const data = await model.where({parent_id: 0}).order(['id ASC']).select();\n\n    return this.success(data);\n  }\n\n  async infoAction() {\n    const id = this.get('id');\n    const model = this.model('category');\n    const data = await model.where({id: id}).find();\n\n    return this.success(data);\n  }\n\n  async storeAction() {\n    if (!this.isPost) {\n      return false;\n    }\n\n    const values = this.post();\n    const id = this.post('id');\n\n    const model = this.model('category');\n    values.is_show = values.is_show ? 1 : 0;\n    if (id > 0) {\n      await model.where({id: id}).update(values);\n    } else {\n      delete values.id;\n      await model.add(values);\n    }\n    return this.success(values);\n  }\n\n  async destoryAction() {\n    const id = this.post('id');\n    await this.model('category').where({id: id}).limit(1).delete();\n    // TODO 删除图片\n\n    return this.success();\n  }\n};\n"
+    ]
+}

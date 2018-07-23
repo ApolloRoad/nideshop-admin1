@@ -1,0 +1,12 @@
+{
+    "version": 3,
+    "sources": [
+        "..\\..\\..\\src\\common\\bootstrap\\worker.js"
+    ],
+    "names": [],
+    "mappings": "AAAA",
+    "file": "..\\..\\..\\src\\common\\bootstrap\\worker.js",
+    "sourcesContent": [
+        "// invoked in worker\n"
+    ]
+}

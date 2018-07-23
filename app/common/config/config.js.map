@@ -1,0 +1,28 @@
+{
+    "version": 3,
+    "sources": [
+        "..\\..\\..\\src\\common\\config\\config.js"
+    ],
+    "names": [
+        "module",
+        "exports",
+        "rootStatic",
+        "resource_on",
+        "resource_reg",
+        "default_module",
+        "weixin",
+        "appid",
+        "secret",
+        "mch_id",
+        "partner_key",
+        "notify_url",
+        "express",
+        "appkey",
+        "request_url"
+    ],
+    "mappings": "AAAA;AACAA,OAAOC,OAAP,GAAiB;AACfC,cAAW,sCADI;AAEfC,eAAa,IAFE,EAEI;AACnBC,gBAAc,qCAHC,EAGsC;AACrDC,kBAAgB,KAJD;AAKfC,UAAQ;AACNC,WAAO,oBADD,EACuB;AAC7BC,YAAQ,kCAFF,EAEsC;AAC5CC,YAAQ,EAHF,EAGM;AACZC,iBAAa,EAJP,EAIW;AACjBC,gBAAY,EALN,CAKS;AALT,GALO;AAYfC,WAAS;AACP;AACAL,WAAO,EAFA,EAEI;AACXM,YAAQ,EAHD,EAGK;AACZC,iBAAa;AAJN;AAZM,CAAjB",
+    "file": "..\\..\\..\\src\\common\\config\\config.js",
+    "sourcesContent": [
+        "// default config\nmodule.exports = {\n  rootStatic:'http://127.0.0.1:8360/static/upload/',\n  resource_on: true, //是否开启静态资源解析功能\n  resource_reg: /^(static\\/|[^\\/]+\\.(?!js|html)\\w+$)/, //判断为静态资源请求的正则\n  default_module: 'api',\n  weixin: {\n    appid: 'wxa4287caddc1530fb', // 小程序 appid\n    secret: 'ed80e1b303bd9cd452cd11c86db9b0dd', // 小程序密钥\n    mch_id: '', // 商户帐号ID\n    partner_key: '', // 微信支付密钥\n    notify_url: '' // 微信异步通知，例：https://www.nideshop.com/api/pay/notify\n  },\n  express: {\n    // 快递物流信息查询使用的是快递鸟接口，申请地址：http://www.kdniao.com/\n    appid: '', // 对应快递鸟用户后台 用户ID\n    appkey: '', // 对应快递鸟用户后台 API key\n    request_url: 'http://api.kdniao.cc/Ebusiness/EbusinessOrderHandle.aspx'\n  }\n};\n"
+    ]
+}

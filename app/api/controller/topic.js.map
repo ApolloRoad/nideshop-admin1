@@ -1,0 +1,32 @@
+{
+    "version": 3,
+    "sources": [
+        "..\\..\\..\\src\\api\\controller\\topic.js"
+    ],
+    "names": [
+        "Base",
+        "require",
+        "module",
+        "exports",
+        "listAction",
+        "model",
+        "data",
+        "field",
+        "page",
+        "get",
+        "countSelect",
+        "success",
+        "detailAction",
+        "where",
+        "id",
+        "find",
+        "relatedAction",
+        "limit",
+        "select"
+    ],
+    "mappings": ";;AAAA,MAAMA,OAAOC,QAAQ,WAAR,CAAb;;AAEAC,OAAOC,OAAP,GAAiB,cAAcH,IAAd,CAAmB;AAC5BI,YAAN,GAAmB;AAAA;;AAAA;AACjB,YAAMC,QAAQ,MAAKA,KAAL,CAAW,OAAX,CAAd;AACA,YAAMC,OAAO,MAAMD,MAAME,KAAN,CAAY,CAAC,IAAD,EAAO,OAAP,EAAgB,YAAhB,EAA8B,eAA9B,EAA+C,UAA/C,CAAZ,EAAwEC,IAAxE,CAA6E,MAAKC,GAAL,CAAS,MAAT,KAAoB,CAAjG,EAAoG,MAAKA,GAAL,CAAS,MAAT,KAAoB,EAAxH,EAA4HC,WAA5H,EAAnB;;AAEA,aAAO,MAAKC,OAAL,CAAaL,IAAb,CAAP;AAJiB;AAKlB;;AAEKM,cAAN,GAAqB;AAAA;;AAAA;AACnB,YAAMP,QAAQ,OAAKA,KAAL,CAAW,OAAX,CAAd;AACA,YAAMC,OAAO,MAAMD,MAAMQ,KAAN,CAAY,EAACC,IAAI,OAAKL,GAAL,CAAS,IAAT,CAAL,EAAZ,EAAkCM,IAAlC,EAAnB;;AAEA,aAAO,OAAKJ,OAAL,CAAaL,IAAb,CAAP;AAJmB;AAKpB;;AAEKU,eAAN,GAAsB;AAAA;;AAAA;AACpB,YAAMX,QAAQ,OAAKA,KAAL,CAAW,OAAX,CAAd;AACA,YAAMC,OAAO,MAAMD,MAAME,KAAN,CAAY,CAAC,IAAD,EAAO,OAAP,EAAgB,YAAhB,EAA8B,eAA9B,EAA+C,UAA/C,CAAZ,EAAwEU,KAAxE,CAA8E,CAA9E,EAAiFC,MAAjF,EAAnB;;AAEA,aAAO,OAAKP,OAAL,CAAaL,IAAb,CAAP;AAJoB;AAKrB;AApBiC,CAApC",
+    "file": "..\\..\\..\\src\\api\\controller\\topic.js",
+    "sourcesContent": [
+        "const Base = require('./base.js');\n\nmodule.exports = class extends Base {\n  async listAction() {\n    const model = this.model('topic');\n    const data = await model.field(['id', 'title', 'price_info', 'scene_pic_url', 'subtitle']).page(this.get('page') || 1, this.get('size') || 10).countSelect();\n\n    return this.success(data);\n  }\n\n  async detailAction() {\n    const model = this.model('topic');\n    const data = await model.where({id: this.get('id')}).find();\n\n    return this.success(data);\n  }\n\n  async relatedAction() {\n    const model = this.model('topic');\n    const data = await model.field(['id', 'title', 'price_info', 'scene_pic_url', 'subtitle']).limit(4).select();\n\n    return this.success(data);\n  }\n};\n"
+    ]
+}

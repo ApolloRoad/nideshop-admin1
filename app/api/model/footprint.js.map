@@ -1,0 +1,27 @@
+{
+    "version": 3,
+    "sources": [
+        "..\\..\\..\\src\\api\\model\\footprint.js"
+    ],
+    "names": [
+        "module",
+        "exports",
+        "think",
+        "Model",
+        "addFootprint",
+        "userId",
+        "goodsId",
+        "add",
+        "goods_id",
+        "user_id",
+        "add_time",
+        "parseInt",
+        "Date",
+        "now"
+    ],
+    "mappings": ";;AAAAA,OAAOC,OAAP,GAAiB,cAAcC,MAAMC,KAApB,CAA0B;AACnCC,cAAN,CAAmBC,MAAnB,EAA2BC,OAA3B,EAAoC;AAAA;;AAAA;AAClC;AACA,UAAID,SAAS,CAAT,IAAcC,UAAU,CAA5B,EAA+B;AAC7B,cAAM,MAAKC,GAAL,CAAS;AACbC,oBAAUF,OADG;AAEbG,mBAASJ,MAFI;AAGbK,oBAAUC,SAASC,KAAKC,GAAL,KAAa,IAAtB;AAHG,SAAT,CAAN;AAKD;AARiC;AASnC;AAVwC,CAA3C",
+    "file": "..\\..\\..\\src\\api\\model\\footprint.js",
+    "sourcesContent": [
+        "module.exports = class extends think.Model {\n  async addFootprint(userId, goodsId) {\n    // 用户已经登录才可以添加到足迹\n    if (userId > 0 && goodsId > 0) {\n      await this.add({\n        goods_id: goodsId,\n        user_id: userId,\n        add_time: parseInt(Date.now() / 1000)\n      });\n    }\n  }\n};\n"
+    ]
+}

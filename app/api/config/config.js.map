@@ -1,0 +1,17 @@
+{
+    "version": 3,
+    "sources": [
+        "..\\..\\..\\src\\api\\config\\config.js"
+    ],
+    "names": [
+        "module",
+        "exports",
+        "publicController",
+        "publicAction"
+    ],
+    "mappings": "AAAA;AACAA,OAAOC,OAAP,GAAiB;AACf;AACAC,oBAAkB;AAChB;AACA,SAFgB,EAGhB,SAHgB,EAIhB,OAJgB,EAKhB,MALgB,EAMhB,OANgB,EAOhB,OAPgB,EAQhB,QARgB,EAShB,QATgB,EAUhB,UAVgB,CAFH;;AAef;AACAC,gBAAc;AACZ;AACA,gBAFY,EAGZ,eAHY,EAIZ,YAJY,EAKZ,UALY,EAMZ,cANY,EAOZ,aAPY,EAQZ,aARY,EASZ,iBATY,EAUZ,YAVY,EAWZ,WAXY;AAhBC,CAAjB",
+    "file": "..\\..\\..\\src\\api\\config\\config.js",
+    "sourcesContent": [
+        "// default config\nmodule.exports = {\n  // 可以公开访问的Controller\n  publicController: [\n    // 格式为controller\n    'index',\n    'catalog',\n    'topic',\n    'auth',\n    'goods',\n    'brand',\n    'search',\n    'region',\n    'adminSet'\n  ],\n\n  // 可以公开访问的Action\n  publicAction: [\n    // 格式为： controller+action\n    'comment/list',\n    'comment/count',\n    'cart/index',\n    'cart/add',\n    'cart/checked',\n    'cart/update',\n    'cart/delete',\n    'cart/goodscount',\n    'pay/notify',\n    'adminList'\n  ]\n};\n"
+    ]
+}

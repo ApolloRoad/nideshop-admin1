@@ -1,0 +1,41 @@
+{
+    "version": 3,
+    "sources": [
+        "..\\..\\..\\src\\admin\\controller\\upload.js"
+    ],
+    "names": [
+        "Base",
+        "require",
+        "fs",
+        "module",
+        "exports",
+        "brandPicAction",
+        "brandFile",
+        "file",
+        "think",
+        "isEmpty",
+        "fail",
+        "that",
+        "filename",
+        "uuid",
+        "is",
+        "createReadStream",
+        "path",
+        "os",
+        "createWriteStream",
+        "ROOT_PATH",
+        "pipe",
+        "success",
+        "name",
+        "fileUrl",
+        "brandNewPicAction",
+        "categoryWapBannerPicAction",
+        "imageFile",
+        "topicThumbAction"
+    ],
+    "mappings": "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",
+    "file": "..\\..\\..\\src\\admin\\controller\\upload.js",
+    "sourcesContent": [
+        "const Base = require('./base.js');\nconst fs = require('fs');\n\nmodule.exports = class extends Base {\n  async brandPicAction() {\n    const brandFile = this.file('brand_pic');\n    if (think.isEmpty(brandFile)) {\n      return this.fail('保存失败');\n    }\n    const that = this;\n    const filename = '/static/upload/brand/' + think.uuid(32) + '.jpg';\n    const is = fs.createReadStream(brandFile.path);\n    const os = fs.createWriteStream(think.ROOT_PATH + '/www' + filename);\n    is.pipe(os);\n\n    return that.success({\n      name: 'brand_pic',\n      fileUrl: 'http://127.0.0.1:8360' + filename\n    });\n  }\n\n  async brandNewPicAction() {\n    const brandFile = this.file('brand_new_pic');\n    if (think.isEmpty(brandFile)) {\n      return this.fail('保存失败');\n    }\n    const that = this;\n    const filename = '/static/upload/brand/' + think.uuid(32) + '.jpg';\n\n    const is = fs.createReadStream(brandFile.path);\n    const os = fs.createWriteStream(think.ROOT_PATH + '/www' + filename);\n    is.pipe(os);\n\n    return that.success({\n      name: 'brand_new_pic',\n      fileUrl: 'http://127.0.0.1:8360' + filename\n    });\n  }\n\n  async categoryWapBannerPicAction() {\n    const imageFile = this.file('wap_banner_pic');\n    if (think.isEmpty(imageFile)) {\n      return this.fail('保存失败');\n    }\n    const that = this;\n    const filename = '/static/upload/category/' + think.uuid(32) + '.jpg';\n\n    const is = fs.createReadStream(imageFile.path);\n    const os = fs.createWriteStream(think.ROOT_PATH + '/www' + filename);\n    is.pipe(os);\n\n    return that.success({\n      name: 'wap_banner_url',\n      fileUrl: 'http://127.0.0.1:8360' + filename\n    });\n  }\n\n  async topicThumbAction() {\n    const imageFile = this.file('scene_pic_url');\n    if (think.isEmpty(imageFile)) {\n      return this.fail('保存失败');\n    }\n    const that = this;\n    const filename = '/static/upload/topic/' + think.uuid(32) + '.jpg';\n\n    const is = fs.createReadStream(imageFile.path);\n    const os = fs.createWriteStream(think.ROOT_PATH + '/www' + filename);\n    is.pipe(os);\n\n    return that.success({\n      name: 'scene_pic_url',\n      fileUrl: 'http://127.0.0.1:8360' + filename\n    });\n  }\n};\n"
+    ]
+}

@@ -1,0 +1,15 @@
+{
+    "version": 3,
+    "sources": [
+        "..\\..\\..\\src\\admin\\config\\config.js"
+    ],
+    "names": [
+        "module",
+        "exports"
+    ],
+    "mappings": "AAAA;AACAA,OAAOC,OAAP,GAAiB,EAAjB",
+    "file": "..\\..\\..\\src\\admin\\config\\config.js",
+    "sourcesContent": [
+        "// default config\nmodule.exports = {\n\n};\n"
+    ]
+}

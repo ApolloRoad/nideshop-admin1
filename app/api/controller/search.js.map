@@ -1,0 +1,40 @@
+{
+    "version": 3,
+    "sources": [
+        "..\\..\\..\\src\\api\\controller\\search.js"
+    ],
+    "names": [
+        "Base",
+        "require",
+        "module",
+        "exports",
+        "indexAction",
+        "defaultKeyword",
+        "model",
+        "where",
+        "is_default",
+        "limit",
+        "find",
+        "hotKeywordList",
+        "distinct",
+        "field",
+        "select",
+        "historyKeywordList",
+        "user_id",
+        "think",
+        "userId",
+        "getField",
+        "success",
+        "helperAction",
+        "keyword",
+        "get",
+        "keywords",
+        "clearhistoryAction",
+        "delete"
+    ],
+    "mappings": ";;AAAA,MAAMA,OAAOC,QAAQ,WAAR,CAAb;;AAEAC,OAAOC,OAAP,GAAiB,cAAcH,IAAd,CAAmB;AAC5BI,aAAN,GAAoB;AAAA;;AAAA;AAClB;AACA,YAAMC,iBAAiB,MAAM,MAAKC,KAAL,CAAW,UAAX,EAAuBC,KAAvB,CAA6B,EAAEC,YAAY,CAAd,EAA7B,EAAgDC,KAAhD,CAAsD,CAAtD,EAAyDC,IAAzD,EAA7B;AACA;AACA,YAAMC,iBAAiB,MAAM,MAAKL,KAAL,CAAW,UAAX,EAAuBM,QAAvB,CAAgC,SAAhC,EAA2CC,KAA3C,CAAiD,CAAC,SAAD,EAAY,QAAZ,CAAjD,EAAwEJ,KAAxE,CAA8E,EAA9E,EAAkFK,MAAlF,EAA7B;AACA,YAAMC,qBAAqB,MAAM,MAAKT,KAAL,CAAW,gBAAX,EAA6BM,QAA7B,CAAsC,SAAtC,EAAiDL,KAAjD,CAAuD,EAAES,SAASC,MAAMC,MAAjB,EAAvD,EAAkFT,KAAlF,CAAwF,EAAxF,EAA4FU,QAA5F,CAAqG,SAArG,CAAjC;;AAEA,aAAO,MAAKC,OAAL,CAAa;AAClBf,wBAAgBA,cADE;AAElBU,4BAAoBA,kBAFF;AAGlBJ,wBAAgBA;AAHE,OAAb,CAAP;AAPkB;AAYnB;;AAEKU,cAAN,GAAqB;AAAA;;AAAA;AACnB,YAAMC,UAAU,OAAKC,GAAL,CAAS,SAAT,CAAhB;AACA,YAAMC,WAAW,MAAM,OAAKlB,KAAL,CAAW,UAAX,EAAuBM,QAAvB,CAAgC,SAAhC,EAA2CL,KAA3C,CAAiD,EAAEe,SAAS,CAAC,MAAD,EAASA,UAAU,GAAnB,CAAX,EAAjD,EAAuFH,QAAvF,CAAgG,SAAhG,EAA2G,EAA3G,CAAvB;AACA,aAAO,OAAKC,OAAL,CAAaI,QAAb,CAAP;AAHmB;AAIpB;;AAEKC,oBAAN,GAA2B;AAAA;;AAAA;AACzB,YAAM,OAAKnB,KAAL,CAAW,gBAAX,EAA6BC,KAA7B,CAAmC,EAAES,SAASC,MAAMC,MAAjB,EAAnC,EAA8DQ,MAA9D,EAAN;AACA,aAAO,OAAKN,OAAL,EAAP;AAFyB;AAG1B;AAxBiC,CAApC",
+    "file": "..\\..\\..\\src\\api\\controller\\search.js",
+    "sourcesContent": [
+        "const Base = require('./base.js');\n\nmodule.exports = class extends Base {\n  async indexAction() {\n    // 取出输入框默认的关键词\n    const defaultKeyword = await this.model('keywords').where({ is_default: 1 }).limit(1).find();\n    // 取出热闹关键词\n    const hotKeywordList = await this.model('keywords').distinct('keyword').field(['keyword', 'is_hot']).limit(10).select();\n    const historyKeywordList = await this.model('search_history').distinct('keyword').where({ user_id: think.userId }).limit(10).getField('keyword');\n\n    return this.success({\n      defaultKeyword: defaultKeyword,\n      historyKeywordList: historyKeywordList,\n      hotKeywordList: hotKeywordList\n    });\n  }\n\n  async helperAction() {\n    const keyword = this.get('keyword');\n    const keywords = await this.model('keywords').distinct('keyword').where({ keyword: ['like', keyword + '%'] }).getField('keyword', 10);\n    return this.success(keywords);\n  }\n\n  async clearhistoryAction() {\n    await this.model('search_history').where({ user_id: think.userId }).delete();\n    return this.success();\n  }\n};\n"
+    ]
+}

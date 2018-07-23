@@ -1,0 +1,26 @@
+{
+    "version": 3,
+    "sources": [
+        "..\\..\\..\\src\\common\\config\\database.js"
+    ],
+    "names": [
+        "mysql",
+        "require",
+        "module",
+        "exports",
+        "handle",
+        "database",
+        "prefix",
+        "encoding",
+        "host",
+        "port",
+        "user",
+        "password",
+        "dateStrings"
+    ],
+    "mappings": "AAAA,MAAMA,QAAQC,QAAQ,mBAAR,CAAd;;AAEAC,OAAOC,OAAP,GAAiB;AACfC,UAAQJ,KADO;AAEfK,YAAU,UAFK;AAGfC,UAAQ,WAHO;AAIfC,YAAU,SAJK;AAKfC,QAAM,WALS;AAMfC,QAAM,MANS;AAOfC,QAAM,MAPS;AAQfC,YAAU,EARK;AASfC,eAAa;AATE,CAAjB",
+    "file": "..\\..\\..\\src\\common\\config\\database.js",
+    "sourcesContent": [
+        "const mysql = require('think-model-mysql');\n\nmodule.exports = {\n  handle: mysql,\n  database: 'nideshop',\n  prefix: 'nideshop_',\n  encoding: 'utf8mb4',\n  host: '127.0.0.1',\n  port: '3306',\n  user: 'root',\n  password: '',\n  dateStrings: true\n};\n"
+    ]
+}

@@ -1,0 +1,28 @@
+{
+    "version": 3,
+    "sources": [
+        "..\\..\\..\\src\\api\\model\\collect.js"
+    ],
+    "names": [
+        "module",
+        "exports",
+        "think",
+        "Model",
+        "isUserHasCollect",
+        "userId",
+        "typeId",
+        "valueId",
+        "hasCollect",
+        "where",
+        "type_id",
+        "value_id",
+        "user_id",
+        "limit",
+        "count"
+    ],
+    "mappings": ";;AAAAA,OAAOC,OAAP,GAAiB,cAAcC,MAAMC,KAApB,CAA0B;AACzC;;;;;;;AAOMC,kBAAN,CAAuBC,MAAvB,EAA+BC,MAA/B,EAAuCC,OAAvC,EAAgD;AAAA;;AAAA;AAC9C,YAAMC,aAAa,MAAM,MAAKC,KAAL,CAAW,EAACC,SAASJ,MAAV,EAAkBK,UAAUJ,OAA5B,EAAqCK,SAASP,MAA9C,EAAX,EAAkEQ,KAAlE,CAAwE,CAAxE,EAA2EC,KAA3E,CAAiF,IAAjF,CAAzB;AACA,aAAON,UAAP;AAF8C;AAG/C;AAXwC,CAA3C",
+    "file": "..\\..\\..\\src\\api\\model\\collect.js",
+    "sourcesContent": [
+        "module.exports = class extends think.Model {\n  /**\n   * 判断用户是否收藏过该对象\n   * @param userId\n   * @param typeId\n   * @param valueId\n   * @returns {Promise.<boolean>}\n   */\n  async isUserHasCollect(userId, typeId, valueId) {\n    const hasCollect = await this.where({type_id: typeId, value_id: valueId, user_id: userId}).limit(1).count('id');\n    return hasCollect;\n  }\n};\n"
+    ]
+}

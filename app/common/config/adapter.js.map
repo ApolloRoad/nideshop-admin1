@@ -1,0 +1,51 @@
+{
+    "version": 3,
+    "sources": [
+        "..\\..\\..\\src\\common\\config\\adapter.js"
+    ],
+    "names": [
+        "fileCache",
+        "require",
+        "Console",
+        "File",
+        "DateFile",
+        "path",
+        "database",
+        "isDev",
+        "think",
+        "env",
+        "exports",
+        "cache",
+        "type",
+        "common",
+        "timeout",
+        "file",
+        "handle",
+        "cachePath",
+        "join",
+        "ROOT_PATH",
+        "pathDepth",
+        "gcInterval",
+        "model",
+        "logConnect",
+        "logSql",
+        "logger",
+        "msg",
+        "info",
+        "mysql",
+        "console",
+        "backups",
+        "absolute",
+        "maxLogSize",
+        "filename",
+        "dateFile",
+        "level",
+        "pattern",
+        "alwaysIncludePattern"
+    ],
+    "mappings": "AAAA,MAAMA,YAAYC,QAAQ,kBAAR,CAAlB;AACA,MAAM,EAACC,OAAD,EAAUC,IAAV,EAAgBC,QAAhB,KAA4BH,QAAQ,eAAR,CAAlC;AACA,MAAMI,OAAOJ,QAAQ,MAAR,CAAb;AACA,MAAMK,WAAWL,QAAQ,eAAR,CAAjB;;AAEA,MAAMM,QAAQC,MAAMC,GAAN,KAAc,aAA5B;;AAEA;;;;AAIAC,QAAQC,KAAR,GAAgB;AACdC,QAAM,MADQ;AAEdC,UAAQ;AACNC,aAAS,KAAK,EAAL,GAAU,EAAV,GAAe,IADlB,CACuB;AADvB,GAFM;AAKdC,QAAM;AACJC,YAAQhB,SADJ;AAEJiB,eAAWZ,KAAKa,IAAL,CAAUV,MAAMW,SAAhB,EAA2B,eAA3B,CAFP,EAEoD;AACxDC,eAAW,CAHP;AAIJC,gBAAY,KAAK,EAAL,GAAU,EAAV,GAAe,IAJvB,CAI4B;AAJ5B;AALQ,CAAhB;;AAaA;;;;AAIAX,QAAQY,KAAR,GAAgB;AACdV,QAAM,OADQ;AAEdC,UAAQ;AACNU,gBAAYhB,KADN;AAENiB,YAAQjB,KAFF;AAGNkB,YAAQC,OAAOlB,MAAMiB,MAAN,CAAaE,IAAb,CAAkBD,GAAlB;AAHT,GAFM;AAOdE,SAAOtB;AAPO,CAAhB;;AAUA;;;;AAIAI,QAAQe,MAAR,GAAiB;AACfb,QAAML,QAAQ,SAAR,GAAoB,UADX;AAEfsB,WAAS;AACPb,YAAQd;AADD,GAFM;AAKfa,QAAM;AACJC,YAAQb,IADJ;AAEJ2B,aAAS,EAFL,EAES;AACbC,cAAU,IAHN;AAIJC,gBAAY,KAAK,IAJb,EAImB;AACvBC,cAAU5B,KAAKa,IAAL,CAAUV,MAAMW,SAAhB,EAA2B,cAA3B;AALN,GALS;AAYfe,YAAU;AACRlB,YAAQZ,QADA;AAER+B,WAAO,KAFC;AAGRJ,cAAU,IAHF;AAIRK,aAAS,aAJD;AAKRC,0BAAsB,IALd;AAMRJ,cAAU5B,KAAKa,IAAL,CAAUV,MAAMW,SAAhB,EAA2B,cAA3B;AANF;AAZK,CAAjB",
+    "file": "..\\..\\..\\src\\common\\config\\adapter.js",
+    "sourcesContent": [
+        "const fileCache = require('think-cache-file');\nconst {Console, File, DateFile} = require('think-logger3');\nconst path = require('path');\nconst database = require('./database.js');\n\nconst isDev = think.env === 'development';\n\n/**\n * cache adapter config\n * @type {Object}\n */\nexports.cache = {\n  type: 'file',\n  common: {\n    timeout: 24 * 60 * 60 * 1000 // millisecond\n  },\n  file: {\n    handle: fileCache,\n    cachePath: path.join(think.ROOT_PATH, 'runtime/cache'), // absoulte path is necessarily required\n    pathDepth: 1,\n    gcInterval: 24 * 60 * 60 * 1000 // gc interval\n  }\n};\n\n/**\n * model adapter config\n * @type {Object}\n */\nexports.model = {\n  type: 'mysql',\n  common: {\n    logConnect: isDev,\n    logSql: isDev,\n    logger: msg => think.logger.info(msg)\n  },\n  mysql: database\n};\n\n/**\n * logger adapter config\n * @type {Object}\n */\nexports.logger = {\n  type: isDev ? 'console' : 'dateFile',\n  console: {\n    handle: Console\n  },\n  file: {\n    handle: File,\n    backups: 10, // max chunk number\n    absolute: true,\n    maxLogSize: 50 * 1024, // 50M\n    filename: path.join(think.ROOT_PATH, 'logs/app.log')\n  },\n  dateFile: {\n    handle: DateFile,\n    level: 'ALL',\n    absolute: true,\n    pattern: '-yyyy-MM-dd',\n    alwaysIncludePattern: true,\n    filename: path.join(think.ROOT_PATH, 'logs/app.log')\n  }\n};\n"
+    ]
+}
